@@ -561,9 +561,10 @@ public class MechanicShop{
 
 	
 	public static void CloseServiceRequest(MechanicShop esql) throws Exception{//5
-		String query = "INSERT INTO (wid, rid, mid, date, comment, bill) VALUES (";
+	try {	
+		String query = "INSERT INTO closed_request (wid, rid, mid, date, comment, bill) VALUES (";
 		String maxID = "SELECT MAX(wid) FROM closed_request;";
-		String userIdString = MaxID(esql, idQuery);	
+		String userIdString = MaxID(esql, maxID);	
 		query += "'" + userIdString + "'"; 
 		System.out.print("Enter service request number");
 		String input = in.readLine();
@@ -572,7 +573,7 @@ public class MechanicShop{
 			System.out.println("Service Request doesn't exists");
 			return;
 		}
-		query += "," + "'" + input + "'";
+		query += ", " + "'" + input + "'";
 		System.out.print("Enter mechanic Id: ");
 		input = in.readLine();
 		String queryForMechanicId = "SELECT * FROM mechanic WHERE id=" + "'" + input + "'" + ";";
@@ -580,7 +581,24 @@ public class MechanicShop{
 			System.out.println("Mechanic ID doesn't exists");
 			return;
 		}
-				  	
+		query += ", " + "'" + input + "'";
+		System.out.print("Enter the date: ");
+		input = in.readLine();
+		query += ", " + "'" + input + "'";
+
+		System.out.print("Enter a comment: ");
+		input = in.readLine();
+		query += ", " + "'" + input + "'";
+				
+		System.out.print("Enter a bill amount: ");
+		input = in.readLine();
+		query += ", " + "'" + input + "');";
+		
+		
+		esql.executeUpdate(query);
+	} catch (Exception e) {
+		System.err.println(e.getMessage());		
+		}			  	
 		//TODO
 	}
 	
